@@ -125,4 +125,32 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+
+    /**
+     * Displays a list of Zoom users (dummy data).
+     * This is an example of how to use the Zoom component.
+     *
+     * @return string
+     */
+    public function actionZoomUsers()
+    {
+        $zoom = \Yii::$app->zoom;
+        $usersData = $zoom->users->listUsers(); // Uses the __get magic method in ZoomComponent
+
+        if ($usersData === false) {
+            \Yii::$app->session->setFlash('error', 'Failed to retrieve Zoom users data.');
+            $users = [];
+            $debugInfo = "Check runtime/logs/app.log for details. Ensure Zoom component is configured correctly.";
+        } else {
+            $users = $usersData['users'] ?? [];
+            $debugInfo = "Successfully fetched (simulated) Zoom users data.";
+             // \Yii::debug(print_r($usersData, true), 'ZoomServiceExample'); // For debugging the whole response
+        }
+
+        return $this->render('zoom-users', [
+            'users' => $users,
+            'debugInfo' => $debugInfo,
+            'isApiConfigured' => !empty($zoom->apiKey) && $zoom->apiKey !== 'YOUR_ZOOM_API_KEY',
+        ]);
+    }
 }

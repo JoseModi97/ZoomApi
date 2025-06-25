@@ -37,11 +37,19 @@ $config = [
             'targets' => [
                 [
                     'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning'],
+                    'levels' => ['error', 'warning', 'info'], // Added info for Zoom component logging
                 ],
             ],
         ],
         'db' => $db,
+        'zoom' => [
+            'class' => 'app\components\zoom\ZoomComponent',
+            'apiKey' => 'YOUR_ZOOM_API_KEY', // Replace with your actual API Key
+            'apiSecret' => 'YOUR_ZOOM_API_SECRET', // Replace with your actual API Secret
+            // For Server-to-Server OAuth, you might also need:
+            // 'accountId' => 'YOUR_ZOOM_ACCOUNT_ID',
+            // 'oauthTokenUrl' => 'https://zoom.us/oauth/token',
+        ],
         /*
         'urlManager' => [
             'enablePrettyUrl' => true,
